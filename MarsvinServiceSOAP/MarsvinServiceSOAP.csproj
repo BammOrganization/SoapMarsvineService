@@ -65,6 +65,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Measurement.cs" />
     <Compile Include="MarsvinService.svc.cs">
       <DependentUpon>MarsvinService.svc</DependentUpon>
     </Compile>
