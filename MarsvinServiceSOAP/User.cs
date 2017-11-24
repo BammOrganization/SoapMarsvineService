@@ -14,7 +14,7 @@ namespace MarsvinServiceSOAP
 
         [DataMember]
         public string Mail;
-
+        
         [DataMember]
         public int PhoneNo;
     }
