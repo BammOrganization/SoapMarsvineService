@@ -15,6 +15,7 @@ namespace MarsvinServiceSOAP
     public class MarsvinService : IMarsvinService
     {
         private const string ConnectionString = "Server=tcp:bamm.database.windows.net,1433;Initial Catalog=Bamm;Persist Security Info=False;User ID=Bamm;Password=Mik112mik112;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
         public int AddUser(User user)
         {
             const string insertUser = "INSERT INTO UserTable (Mail, PhoneNo) VALUES (@Mail, @PhoneNo)";
@@ -135,13 +136,13 @@ namespace MarsvinServiceSOAP
 
         public int AddMeasurement(Measurement measurement)
         {
-            const string insertMeasurement = "INSERT INTO Measurement (Time, dB, ImageLink) values (@Time, @dB, @ImageLink)";
+            const string insertMeasurement = "INSERT INTO Measurement (dB, ImageLink) values (@dB, @ImageLink)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using(SqlCommand insertCommand = new SqlCommand(insertMeasurement, databaseConnection))
                 {
-                    insertCommand.Parameters.AddWithValue("@Time", measurement.Time);
+                    //insertCommand.Parameters.AddWithValue("@Time", measurement.Time);
                     insertCommand.Parameters.AddWithValue("@dB", measurement.dB);
                     insertCommand.Parameters.AddWithValue("@ImageLink", measurement.ImageLink);
                     int rowsAffected = insertCommand.ExecuteNonQuery();
