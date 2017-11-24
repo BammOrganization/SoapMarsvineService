@@ -31,6 +31,10 @@ namespace MarsvinServiceSOAP
         int AddMeasurement(Measurement measurement);
 
 
+        //[OperationContract]
+        //int AddMeasurementNoLink(Measurement measurement);
+
+
     }
 
 }
