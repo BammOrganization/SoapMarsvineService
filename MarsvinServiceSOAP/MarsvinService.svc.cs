@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -150,19 +150,19 @@ namespace MarsvinServiceSOAP
             }
         }
 
-        //public int AddMeasurementNoLink(Measurement measurement)
-        //{
-        //    const string insertMeasurement = "INSERT INTO Measurement (dB) values (@dB)";
-        //    using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
-        //    {
-        //        databaseConnection.Open();
-        //        using (SqlCommand insertCommand = new SqlCommand(insertMeasurement, databaseConnection))
-        //        {
-        //            insertCommand.Parameters.AddWithValue("@dB", measurement.dB);
-        //            int rowsAffected = insertCommand.ExecuteNonQuery();
-        //            return rowsAffected;
-        //        }
-        //    }
-        //}
+        public int AddMeasurementNoLink(Measurement measurement)
+        {
+            const string insertMeasurement = "INSERT INTO Measurement (dB) values (@dB)";
+            using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
+            {
+                databaseConnection.Open();
+                using (SqlCommand insertCommand = new SqlCommand(insertMeasurement, databaseConnection))
+                {
+                    insertCommand.Parameters.AddWithValue("@dB", measurement.dB);
+                    int rowsAffected = insertCommand.ExecuteNonQuery();
+                    return rowsAffected;
+                }
+            }
+        }
     }
 }
