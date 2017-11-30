@@ -1,8 +1,9 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
@@ -15,6 +16,31 @@ namespace MarsvinServiceSOAP
     public class MarsvinService : IMarsvinService
     {
         private const string ConnectionString = "Server=tcp:bamm.database.windows.net,1433;Initial Catalog=Bamm;Persist Security Info=False;User ID=Bamm;Password=Mik112mik112;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+
+        #region User metoder
+
+
+        public User GetUserById()
+        {
+            const string SelectStudentByID = "Select * from UserTable where id = 6";
+            using (var DBconnection = new SqlConnection(ConnectionString))
+            {
+                DBconnection.Open();
+                using (var selectCommand = new SqlCommand(SelectStudentByID, DBconnection))
+                {
+                    using (var reader = selectCommand.ExecuteReader())
+                    {
+                        if (!reader.HasRows)
+                            return null;
+                        reader.Read();
+                        var _user = ReadUser(reader);
+                        return _user;
+                    }
+                }
+            }
+        }
+
 
         public int AddUser(User user)
         {
@@ -35,12 +61,12 @@ namespace MarsvinServiceSOAP
         public void DeleteUser(User user)
         {
             const string deleteUser = "DELETE FROM UserTable WHERE user LIKE @user";
-            using(SqlConnection databaseConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
-                using(SqlCommand deleteCommand = new SqlCommand(deleteUser, databaseConnection))
+                using (SqlCommand deleteCommand = new SqlCommand(deleteUser, databaseConnection))
                 {
-                    using(SqlDataReader reader = deleteCommand.ExecuteReader())
+                    using (SqlDataReader reader = deleteCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -120,6 +146,8 @@ namespace MarsvinServiceSOAP
             }
         }
 
+
+
         private static User ReadUser(IDataRecord reader)
         {
             int id = reader.GetInt32(0);
@@ -134,17 +162,26 @@ namespace MarsvinServiceSOAP
             return user;
         }
 
+        #endregion
+
+
+        #region Measurement Metoder
+
         public int AddMeasurement(Measurement measurement)
         {
             const string insertMeasurement = "INSERT INTO Measurement (dB, ImageLink) values (@dB, @ImageLink)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
-                using(SqlCommand insertCommand = new SqlCommand(insertMeasurement, databaseConnection))
+                using (SqlCommand insertCommand = new SqlCommand(insertMeasurement, databaseConnection))
                 {
                     insertCommand.Parameters.AddWithValue("@dB", measurement.dB);
                     insertCommand.Parameters.AddWithValue("@ImageLink", measurement.ImageLink);
                     int rowsAffected = insertCommand.ExecuteNonQuery();
+                    if (measurement.dB > 49)
+                    {
+                        NooootiiiiEmail();
+                    }
                     return rowsAffected;
                 }
             }
@@ -164,5 +201,38 @@ namespace MarsvinServiceSOAP
                 }
             }
         }
+
+        #endregion
+
+        //metode til email
+     
+        private void NooootiiiiEmail()
+        {
+            string BrugerEmail = GetUserById().Mail;
+            string subject = "Subject";
+            string body = "Body";
+
+
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+            mail.From = new MailAddress("bammbruger@gmail.com");
+            mail.To.Add(BrugerEmail);
+            mail.Subject = subject;
+            mail.Body = body;
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("bammbruger@gmail.com", "mik112mik112");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
+        }
+
+
+
+
+
+
+
     }
 }

@@ -27,6 +27,8 @@ namespace MarsvinServiceSOAP
         [OperationContract]
         void DeleteUser(User user);
 
+
+
         [OperationContract]
         int AddMeasurement(Measurement measurement);
 
