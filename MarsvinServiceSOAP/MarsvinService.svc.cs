@@ -210,8 +210,8 @@ namespace MarsvinServiceSOAP
         {
 
             string BrugerEmail = GetUserById().Mail;
-            string subject = "Subject";
-            string body = "Body";
+            string subject = "dB overskredet";
+            string body = "Et marsvin har overskredet 50 dB...";
 
 
             MailMessage mail = new MailMessage();
