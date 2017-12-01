@@ -206,8 +206,9 @@ namespace MarsvinServiceSOAP
 
         //metode til email
      
-        private void NooootiiiiEmail()
+        private void NooootiiiiEmail() 
         {
+
             string BrugerEmail = GetUserById().Mail;
             string subject = "Subject";
             string body = "Body";
@@ -221,7 +222,7 @@ namespace MarsvinServiceSOAP
             mail.Subject = subject;
             mail.Body = body;
 
-            SmtpServer.Port = 587;
+            SmtpServer.Port = 587; //587 er gmail
             SmtpServer.Credentials = new System.Net.NetworkCredential("bammbruger@gmail.com", "mik112mik112");
             SmtpServer.EnableSsl = true;
 
